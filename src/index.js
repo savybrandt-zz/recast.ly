@@ -1,4 +1,6 @@
+//console.log('our data', window.exampleVideoData);
+
 ReactDOM.render(
-  <App videos={window.exampleVideoData} video={window.exampleVideoData} />,
+  <App />,
   document.getElementById('app')
   );
