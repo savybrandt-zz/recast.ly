@@ -1,17 +1,18 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props: ', props);
+    //console.log('props: ', props);
     this.state = {
-      clicked: false
+      clicked: false,
+      currentVideo: window.exampleVideoData[0]
     };
   }
 
-  onVideoClick(video) {
+  onVideoClick(video, event) {
     console.log('We have click!');
-    //console.log('video: ', video.target);
     this.setState({
-      clicked: !this.state.clicked
+      clicked: !this.state.clicked,
+      currentVideo: video
     });  
   }
 
@@ -20,7 +21,7 @@ class App extends React.Component {
       <div>
         <Nav />
         <div className="col-md-7">
-          <VideoPlayer video={window.exampleVideoData[0]} />
+          <VideoPlayer video={this.state.currentVideo} />
         </div>
         <div className="col-md-5">
           <VideoList videos={window.exampleVideoData} onVideoTitleClick={this.onVideoClick.bind(this)}/>
