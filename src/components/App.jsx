@@ -4,7 +4,9 @@ class App extends React.Component {
     //console.log('props: ', props);
     this.state = {
       clicked: false,
-      currentVideo: window.exampleVideoData[0]
+      currentVideo: window.exampleVideoData[0],
+      searchResults: window.exampleVideoData,
+      input: ''
     };
   }
 
@@ -16,15 +18,41 @@ class App extends React.Component {
     });  
   }
 
+  onSearchChange(event) {
+    this.setState({
+      input: event.target.value
+    });
+  }
+
+  onSearchSubmit(event) {
+    console.log('search started: query: ', this.state.input);
+
+    var searchOptions = {
+      key: window.YOUTUBE_API_KEY, 
+      query: this.state.input, 
+      max: 5
+    };
+
+    var callback = function(data) {
+      console.log('do something with search data');
+      this.setState({
+        currentVideo: data[0],
+        searchResults: data
+      });
+    }.bind(this);
+
+    window.searchYouTube(searchOptions, callback);
+  }
+
   render() {
     return (
       <div>
-        <Nav />
+        <Nav onSearch={this.onSearchSubmit.bind(this)} onInput={this.onSearchChange.bind(this)} />
         <div className="col-md-7">
           <VideoPlayer video={this.state.currentVideo} />
         </div>
         <div className="col-md-5">
-          <VideoList videos={window.exampleVideoData} onVideoTitleClick={this.onVideoClick.bind(this)}/>
+          <VideoList videos={this.state.searchResults} onVideoTitleClick={this.onVideoClick.bind(this)}/>
         </div>
       </div>
     );
